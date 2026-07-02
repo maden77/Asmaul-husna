@@ -4,11 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GIF Kaligrafi | 99 Asmaul Husna & Tokoh</title>
+    <!-- Preconnect untuk Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome via CDN (dengan fallback) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +21,7 @@
             background: #0b1a1e;
             background-image: radial-gradient(circle at 20% 30%, #1a3a3f, #0b1a1e 80%);
             min-height: 100vh;
-            font-family: 'Amiri', 'Segoe UI', serif;
+            font-family: 'Amiri', 'Segoe UI', 'Times New Roman', serif;
             color: #e8e0d4;
             padding: 1.5rem 1rem;
         }
@@ -26,6 +29,8 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+        
+        /* ===== HEADER ===== */
         .header {
             text-align: center;
             margin-bottom: 2.5rem;
@@ -58,6 +63,8 @@
             background: #0b1a1e55;
             backdrop-filter: blur(2px);
         }
+        
+        /* ===== FILTER BAR ===== */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -87,6 +94,8 @@
             box-shadow: 0 0 20px #d4af3760;
             transform: scale(1.03);
         }
+        
+        /* ===== GRID ===== */
         .gif-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -119,7 +128,6 @@
             justify-content: center;
             border: 1px solid #d4af3730;
             box-shadow: inset 0 0 15px #00000055;
-            position: relative;
         }
         .gif-wrapper svg {
             width: 100%;
@@ -159,6 +167,8 @@
             font-size: 1.2rem;
             width: 100%;
         }
+        
+        /* ===== FOOTER ===== */
         .footer {
             margin-top: 3rem;
             text-align: center;
@@ -171,6 +181,8 @@
         .footer i {
             color: #d4af37;
         }
+        
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 2rem;
@@ -195,11 +207,13 @@
 </head>
 <body>
     <div class="container">
+        <!-- ===== HEADER ===== -->
         <div class="header">
             <h1><i class="fas fa-pen-fancy"></i> <span>99 Asmaul Husna</span> <i class="fas fa-moon"></i></h1>
             <div class="sub">✦ + Kaligrafi Umar · Muhammad ✦</div>
         </div>
 
+        <!-- ===== FILTER ===== -->
         <div class="filter-bar" id="filterBar">
             <button class="filter-btn active" data-filter="all"><i class="fas fa-th"></i> Semua</button>
             <button class="filter-btn" data-filter="asmaul-husna"><i class="fas fa-star"></i> Asmaul Husna (99)</button>
@@ -208,8 +222,10 @@
             <button class="filter-btn" data-filter="lainnya"><i class="fas fa-gem"></i> Lainnya</button>
         </div>
 
+        <!-- ===== GRID ===== -->
         <div class="gif-grid" id="gifGrid"></div>
 
+        <!-- ===== FOOTER ===== -->
         <div class="footer">
             <i class="fas fa-heart" style="margin: 0 6px;"></i>
             Kumpulan Kaligrafi Animasi · 99 Asmaul Husna ·
@@ -220,7 +236,7 @@
 
     <script>
         (function() {
-            // ========== 99 ASMAUL HUSNA (ARAB) ==========
+            // ===== DATA =====
             const asmaulHusnaArab = [
                 { arab: "الرَّحْمَنُ", latin: "Ar-Rahman" },
                 { arab: "الرَّحِيمُ", latin: "Ar-Rahim" },
@@ -323,7 +339,6 @@
                 { arab: "الصَّبُورُ", latin: "As-Sabur" }
             ];
 
-            // Data tambahan dengan tulisan Arab
             const extraData = [
                 { arab: "عُمَر الْفَارُوق", latin: "Umar Al-Faruk", category: 'umar' },
                 { arab: "عُمَر بْن الْخَطَّاب", latin: "Umar bin Khattab", category: 'umar' },
@@ -339,203 +354,146 @@
                 { arab: "مَا شَاءَ اللَّه", latin: "Masha Allah", category: 'lainnya' },
             ];
 
-            // Gabungkan semua data
             let allData = [];
             asmaulHusnaArab.forEach((item, idx) => {
-                allData.push({
-                    id: idx + 1,
-                    arab: item.arab,
-                    latin: item.latin,
-                    category: 'asmaul-husna'
-                });
+                allData.push({ id: idx + 1, arab: item.arab, latin: item.latin, category: 'asmaul-husna' });
             });
             extraData.forEach((item, idx) => {
-                allData.push({
-                    id: 100 + idx,
-                    arab: item.arab,
-                    latin: item.latin,
-                    category: item.category
-                });
+                allData.push({ id: 100 + idx, arab: item.arab, latin: item.latin, category: item.category });
             });
 
-            // ========== FUNGSI BUAT SVG KALIGRAFI ARAB ==========
+            // ===== FUNGSI BUAT SVG =====
             function createKaligrafiSVG(arabText, latinText, category) {
-                // Pilih warna berdasarkan kategori
-                let mainColor, subColor, glowColor, fontSize;
+                let mainColor, subColor, fontSize;
 
                 if (category === 'asmaul-husna') {
                     mainColor = '#f3e9d2';
                     subColor = '#d4af37';
-                    glowColor = 'rgba(212,175,55,0.3)';
                     fontSize = 36;
                 } else if (category === 'umar') {
                     mainColor = '#d4af37';
                     subColor = '#f3e9d2';
-                    glowColor = 'rgba(212,175,55,0.4)';
                     fontSize = 34;
                 } else if (category === 'muhammad') {
                     mainColor = '#7ec8e3';
                     subColor = '#f3e9d2';
-                    glowColor = 'rgba(126,200,227,0.3)';
                     fontSize = 34;
                 } else {
                     mainColor = '#b9ad9a';
                     subColor = '#d4af37';
-                    glowColor = 'rgba(185,173,154,0.3)';
                     fontSize = 32;
                 }
 
-                // Sesuaikan ukuran teks Arab jika panjang
                 if (arabText.length > 15) fontSize = 28;
                 else if (arabText.length > 12) fontSize = 30;
                 else if (arabText.length > 8) fontSize = 32;
 
-                // Label kategori untuk subteks
-                let categoryLabel = '';
-                if (category === 'asmaul-husna') categoryLabel = '✦ Asmaul Husna';
-                else if (category === 'umar') categoryLabel = '⚔️ Umar Al-Faruk';
-                else if (category === 'muhammad') categoryLabel = '🕌 Muhammad ﷺ';
-                else categoryLabel = '☪️ Kaligrafi';
+                let categoryLabel = category === 'asmaul-husna' ? '✦ Asmaul Husna' :
+                    category === 'umar' ? '⚔️ Umar Al-Faruk' :
+                    category === 'muhammad' ? '🕌 Muhammad ﷺ' : '☪️ Kaligrafi';
+
+                const uniqueId = latinText.replace(/\s/g, '');
 
                 return `
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
                             <defs>
-                                <radialGradient id="bg-${latinText.replace(/\s/g,'')}" cx="50%" cy="50%" r="50%">
+                                <radialGradient id="bg-${uniqueId}" cx="50%" cy="50%" r="50%">
                                     <stop offset="0%" stop-color="#1a3a3f"/>
                                     <stop offset="100%" stop-color="#0a171b"/>
                                 </radialGradient>
-                                <filter id="glow-${latinText.replace(/\s/g,'')}">
-                                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                                <filter id="glow-${uniqueId}">
+                                    <feGaussianBlur stdDeviation="3"/>
                                     <feMerge>
-                                        <feMergeNode in="blur"/>
+                                        <feMergeNode/>
                                         <feMergeNode in="SourceGraphic"/>
                                     </feMerge>
                                 </filter>
-                                <filter id="glowStrong-${latinText.replace(/\s/g,'')}">
-                                    <feGaussianBlur stdDeviation="6" result="blur"/>
+                                <filter id="glowStrong-${uniqueId}">
+                                    <feGaussianBlur stdDeviation="6"/>
                                     <feMerge>
-                                        <feMergeNode in="blur"/>
+                                        <feMergeNode/>
                                         <feMergeNode in="SourceGraphic"/>
                                     </feMerge>
                                 </filter>
                             </defs>
-
-                            <!-- Background -->
-                            <rect width="300" height="300" fill="url(#bg-${latinText.replace(/\s/g,'')})"/>
-
-                            <!-- Border dekoratif -->
+                            <rect width="300" height="300" fill="url(#bg-${uniqueId})"/>
                             <rect x="10" y="10" width="280" height="280" rx="12" fill="none" stroke="#d4af3740" stroke-width="1.5"/>
-
-                            <!-- Animasi bintang berputar -->
+                            
                             <g>
                                 <animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="25s" repeatCount="indefinite"/>
                                 ${Array.from({length:8}, (_,i) => {
                                     const angle = (i/8)*360;
                                     return `<circle cx="${150 + Math.cos(angle*Math.PI/180)*110}" cy="${150 + Math.sin(angle*Math.PI/180)*110}" r="3" fill="#d4af3740" opacity="0.6">
                                                 <animate attributeName="r" values="2;5;2" dur="3s" repeatCount="indefinite" begin="${i*0.4}s"/>
-                                                <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite" begin="${i*0.4}s"/>
                                             </circle>`;
                                 }).join('')}
                             </g>
-
-                            <!-- Lingkaran berdenyut -->
+                            
                             <circle cx="150" cy="150" r="95" fill="none" stroke="#d4af3720" stroke-width="1.5">
                                 <animate attributeName="r" values="90;105;90" dur="4s" repeatCount="indefinite"/>
-                                <animate attributeName="opacity" values="0.2;0.6;0.2" dur="4s" repeatCount="indefinite"/>
                             </circle>
                             <circle cx="150" cy="150" r="65" fill="none" stroke="#d4af3710" stroke-width="1">
                                 <animate attributeName="r" values="60;70;60" dur="5s" repeatCount="indefinite"/>
                             </circle>
-
-                            <!-- Teks Arab utama -->
-                            <text x="150" y="140" text-anchor="middle" font-family="'Scheherazade New', 'Amiri', serif" 
-                                  font-weight="bold" font-size="${fontSize}" fill="${mainColor}" 
-                                  filter="url(#glowStrong-${latinText.replace(/\s/g,'')})" dir="rtl">
+                            
+                            <text x="150" y="140" text-anchor="middle" font-family="'Scheherazade New', 'Amiri', 'Arial', sans-serif" font-weight="bold" font-size="${fontSize}" fill="${mainColor}" filter="url(#glowStrong-${uniqueId})" dir="rtl">
                                 ${arabText}
                                 <animate attributeName="y" values="135;148;135" dur="4s" repeatCount="indefinite"/>
-                                <animate attributeName="opacity" values="0.9;1;0.9" dur="4s" repeatCount="indefinite"/>
                             </text>
-
-                            <!-- Latin transliterasi -->
-                            <text x="150" y="180" text-anchor="middle" font-family="'Amiri', serif" 
-                                  font-size="14" fill="${subColor}" opacity="0.7" 
-                                  filter="url(#glow-${latinText.replace(/\s/g,'')})">
+                            
+                            <text x="150" y="185" text-anchor="middle" font-family="'Amiri', 'Segoe UI', serif" font-size="14" fill="${subColor}" opacity="0.8" filter="url(#glow-${uniqueId})">
                                 ${latinText}
-                                <animate attributeName="y" values="175;185;175" dur="4.5s" repeatCount="indefinite"/>
+                                <animate attributeName="y" values="180;190;180" dur="4.5s" repeatCount="indefinite"/>
                             </text>
-
-                            <!-- Kategori -->
-                            <text x="150" y="215" text-anchor="middle" font-family="'Amiri', serif" 
-                                  font-size="12" fill="#b9ad9a" opacity="0.5">
+                            
+                            <text x="150" y="220" text-anchor="middle" font-family="'Amiri', serif" font-size="11" fill="#b9ad9a" opacity="0.5">
                                 ${categoryLabel}
-                                <animate attributeName="y" values="210;220;210" dur="5s" repeatCount="indefinite"/>
+                                <animate attributeName="y" values="215;225;215" dur="5s" repeatCount="indefinite"/>
                             </text>
-
-                            <!-- Ornamen bawah -->
-                            <g>
-                                <circle cx="150" cy="250" r="5" fill="#d4af3740">
-                                    <animate attributeName="r" values="3;7;3" dur="2.5s" repeatCount="indefinite"/>
-                                    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/>
-                                </circle>
-                                <circle cx="130" cy="250" r="3" fill="#d4af3720">
-                                    <animate attributeName="r" values="2;4;2" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                </circle>
-                                <circle cx="170" cy="250" r="3" fill="#d4af3720">
-                                    <animate attributeName="r" values="2;4;2" dur="3s" repeatCount="indefinite" begin="1s"/>
-                                </circle>
-                            </g>
-
-                            <!-- Partikel halus berkilau -->
-                            ${Array.from({length:8}, (_,i) => {
+                            
+                            <circle cx="150" cy="250" r="5" fill="#d4af3740">
+                                <animate attributeName="r" values="3;7;3" dur="2.5s" repeatCount="indefinite"/>
+                            </circle>
+                            
+                            ${Array.from({length:6}, (_,i) => {
                                 const x = 30 + Math.random()*240;
                                 const y = 30 + Math.random()*240;
-                                const size = 1 + Math.random()*2;
-                                return `<circle cx="${x}" cy="${y}" r="${size}" fill="#d4af37" opacity="0.2">
+                                return `<circle cx="${x}" cy="${y}" r="1.5" fill="#d4af37" opacity="0.2">
                                             <animate attributeName="opacity" values="0.05;0.4;0.05" dur="${2+Math.random()*4}s" repeatCount="indefinite" begin="${Math.random()*3}s"/>
-                                            <animate attributeName="r" values="${size};${size+1.5};${size}" dur="${2+Math.random()*3}s" repeatCount="indefinite" begin="${Math.random()*2}s"/>
                                         </circle>`;
                             }).join('')}
                         </svg>
                     `;
             }
 
-            // ========== RENDER ==========
+            // ===== RENDER =====
             const grid = document.getElementById('gifGrid');
             const filterBtns = document.querySelectorAll('.filter-btn');
 
             function render(category = 'all') {
-                let filtered = allData;
-                if (category !== 'all') {
-                    filtered = allData.filter(item => item.category === category);
-                }
+                let filtered = category === 'all' ? allData : allData.filter(item => item.category === category);
 
                 if (filtered.length === 0) {
-                    grid.innerHTML =
-                        `<div class="no-gif"><i class="fas fa-search" style="margin-right:8px;"></i> Tidak ada untuk kategori ini</div>`;
+                    grid.innerHTML = `<div class="no-gif"><i class="fas fa-search"></i> Tidak ada untuk kategori ini</div>`;
                     return;
                 }
 
                 let html = '';
                 filtered.forEach((item) => {
-                    let icon = 'fa-pen-fancy';
-                    if (item.category === 'asmaul-husna') icon = 'fa-star';
-                    else if (item.category === 'umar') icon = 'fa-user-tie';
-                    else if (item.category === 'muhammad') icon = 'fa-flag';
-                    else icon = 'fa-gem';
-
-                    const svgContent = createKaligrafiSVG(item.arab, item.latin, item.category);
+                    let icon = item.category === 'asmaul-husna' ? 'fa-star' :
+                        item.category === 'umar' ? 'fa-user-tie' :
+                        item.category === 'muhammad' ? 'fa-flag' : 'fa-gem';
 
                     html += `
-                            <div class="gif-card" data-category="${item.category}">
+                            <div class="gif-card">
                                 <div class="gif-wrapper">
-                                    ${svgContent}
+                                    ${createKaligrafiSVG(item.arab, item.latin, item.category)}
                                 </div>
                                 <div class="label"><i class="fas ${icon}"></i> ${item.latin}</div>
                                 <div class="tag">${item.category === 'asmaul-husna' ? 'Asmaul Husna' : item.category.toUpperCase()}</div>
                             </div>
                         `;
                 });
-
                 grid.innerHTML = html;
             }
 
@@ -543,7 +501,7 @@
                 btn.addEventListener('click', function() {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    render(this.getAttribute('data-filter'));
+                    render(this.dataset.filter);
                 });
             });
 
